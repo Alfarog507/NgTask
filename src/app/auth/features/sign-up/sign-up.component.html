@@ -41,6 +41,12 @@
               placeholder="name@company.com"
               formControlName="email"
             />
+            <small class="text-red-400" *ngIf="isRequired('email')"
+              >This input is required</small
+            >
+            <small class="text-red-400" *ngIf="isEmail()"
+              >Invalid email address</small
+            >
           </div>
           <div>
             <label
@@ -56,6 +62,12 @@
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               formControlName="password"
             />
+            <small class="text-red-400" *ngIf="isRequired('password')"
+              >This input is required</small
+            >
+            <small class="text-red-400" *ngIf="isMinLength('password')"
+              >Password must be at least 8 characters</small
+            >
           </div>
           <div>
             <label
@@ -64,13 +76,28 @@
               >Confirm password</label
             >
             <input
-              type="confirm-password"
+              type="password"
               name="confirm-password"
               id="confirm-password"
               placeholder="••••••••"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               formControlName="confirmPassword"
             />
+            <small class="text-red-400" *ngIf="isRequired('confirmPassword')"
+              >This input is required</small
+            >
+            <small class="text-red-400" *ngIf="isMinLength('confirmPassword')"
+              >Password must be at least 8 characters</small
+            >
+            <small
+              class="text-red-400"
+              *ngIf="
+                !passwordsMatch() &&
+                signUpForm.get('password')?.touched &&
+                signUpForm.get('confirmPassword')?.touched
+              "
+              >Passwords do not match</small
+            >
           </div>
           <div class="flex items-start">
             <div class="flex items-center h-5">
