@@ -12,6 +12,8 @@ import {
   passwordsMatch,
 } from '../../utils/validators';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../data-access/auth.service';
+import { toast } from 'ngx-sonner';
 
 interface SignUpForm {
   email: FormControl<string | null>;
@@ -28,6 +30,7 @@ interface SignUpForm {
 })
 export default class SignUpComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
+  private _authService = inject(AuthService);
 
   isRequired(field: 'email' | 'password' | 'confirmPassword') {
     return isRequired(field, this.signUpForm);
@@ -61,9 +64,24 @@ export default class SignUpComponent {
     terms: this._formBuilder.control(false, Validators.requiredTrue),
   });
 
-  onSubmit() {
+  async onSubmit() {
     if (this.signUpForm.invalid) return;
 
-    const { email, password, confirmPassword, terms } = this.signUpForm.value;
+    try {
+      const { email, password, terms } = this.signUpForm.value;
+
+      if (!terms) {
+        return;
+      }
+
+      if (!email || !password) {
+        return;
+      }
+
+      await this._authService.signUp({ email, password });
+      toast.success('Account created successfully.');
+    } catch (error) {
+      toast.error('An error occurred. Please try again later.');
+    }
   }
 }
