@@ -14,6 +14,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../data-access/auth.service';
 import { toast } from 'ngx-sonner';
+import { Router } from '@angular/router';
 
 interface SignUpForm {
   email: FormControl<string | null>;
@@ -31,6 +32,7 @@ interface SignUpForm {
 export default class SignUpComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _authService = inject(AuthService);
+  private _router = inject(Router);
 
   isRequired(field: 'email' | 'password' | 'confirmPassword') {
     return isRequired(field, this.signUpForm);
@@ -80,6 +82,7 @@ export default class SignUpComponent {
 
       await this._authService.signUp({ email, password });
       toast.success('Account created successfully.');
+      this._router.navigate(['/task']);
     } catch (error) {
       toast.error('An error occurred. Please try again later.');
     }
