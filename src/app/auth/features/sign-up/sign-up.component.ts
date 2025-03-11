@@ -14,7 +14,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../data-access/auth.service';
 import { toast } from 'ngx-sonner';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { GoogleButtonComponent } from '../../ui/google-button/google-button.component';
 
 interface SignUpForm {
   email: FormControl<string | null>;
@@ -25,7 +26,12 @@ interface SignUpForm {
 
 @Component({
   selector: 'app-sign-up',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    CommonModule,
+    GoogleButtonComponent,
+  ],
   templateUrl: './sign-up.component.html',
   styles: ``,
 })
@@ -82,6 +88,16 @@ export default class SignUpComponent {
 
       await this._authService.signUp({ email, password });
       toast.success('Account created successfully.');
+      this._router.navigate(['/task']);
+    } catch (error) {
+      toast.error('An error occurred. Please try again later.');
+    }
+  }
+
+  async submitWithGoogle() {
+    try {
+      await this._authService.signInWithGoogle();
+      toast.success('Signed up successfully.');
       this._router.navigate(['/task']);
     } catch (error) {
       toast.error('An error occurred. Please try again later.');

@@ -9,7 +9,8 @@ import { isRequired, isEmail, isMinLength } from '../../utils/validators';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../data-access/auth.service';
 import { toast } from 'ngx-sonner';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { GoogleButtonComponent } from '../../ui/google-button/google-button.component';
 
 interface SignInForm {
   email: FormControl<string | null>;
@@ -18,7 +19,12 @@ interface SignInForm {
 
 @Component({
   selector: 'app-sign-in',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    CommonModule,
+    GoogleButtonComponent,
+  ],
   templateUrl: './sign-in.component.html',
   styles: ``,
 })
@@ -61,6 +67,16 @@ export default class SignInComponent {
       }
 
       await this._authService.signIn({ email, password });
+      toast.success('Signed in successfully.');
+      this._router.navigate(['/task']);
+    } catch (error) {
+      toast.error('An error occurred. Please try again later.');
+    }
+  }
+
+  async signInWithGoogle() {
+    try {
+      await this._authService.signInWithGoogle();
       toast.success('Signed in successfully.');
       this._router.navigate(['/task']);
     } catch (error) {

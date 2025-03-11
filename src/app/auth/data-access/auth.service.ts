@@ -3,6 +3,8 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from '@angular/fire/auth';
 
 export interface User {
@@ -26,5 +28,10 @@ export class AuthService {
 
   signIn(user: User) {
     return signInWithEmailAndPassword(this._auth, user.email, user.password);
+  }
+
+  signInWithGoogle() {
+    const _googleProvider = new GoogleAuthProvider();
+    return signInWithPopup(this._auth, _googleProvider);
   }
 }
