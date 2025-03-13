@@ -11,4 +11,8 @@ export class AuthStateService {
   get authState(): Observable<any> {
     return authState(this._auth);
   }
+
+  logout() {
+    this._auth.signOut();
+  }
 }
