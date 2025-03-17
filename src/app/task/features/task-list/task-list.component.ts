@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AuthStateService } from '../../../shared/data-access/auth-state.service';
 import { Router } from '@angular/router';
+import TableComponent from '../../ui/table/table.component';
 
 @Component({
   selector: 'app-task-list',
-  imports: [],
+  imports: [TableComponent],
   templateUrl: './task-list.component.html',
   styles: ``,
 })
