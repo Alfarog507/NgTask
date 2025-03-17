@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../auth/data-access/auth.service';
 import { AuthStateService } from '../../../shared/data-access/auth-state.service';
 import { Router } from '@angular/router';
 

@@ -70,7 +70,14 @@ export default class SignInComponent {
       toast.success('Signed in successfully.');
       this._router.navigate(['/task']);
     } catch (error) {
-      toast.error('An error occurred. Please try again later.');
+      if ((error as Error).message === 'User not found') {
+        toast.error(
+          'Account does not exist. Please check your email and try again.'
+        );
+      } else {
+        toast.error('An error occurred. Please try again later.');
+      }
+      this.signInForm.reset();
     }
   }
 
