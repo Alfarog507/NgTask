@@ -12,29 +12,29 @@ export default class TableComponent {
       id: 1,
       name: 'Task 1',
       description: 'Description 1',
-      status: 'In Progress',
+      status: false,
     },
     {
       id: 2,
       name: 'Task 2',
       description: 'Description 2',
-      status: 'In Progress',
+      status: false,
     },
     {
       id: 3,
       name: 'Task 3',
       description: 'Description 3',
-      status: 'In Progress',
+      status: false,
     },
     {
       id: 4,
       name: 'Task 4',
       description: 'Description 4',
-      status: 'In Progress',
+      status: false,
     },
   ];
 
   toggleStatus(task: any) {
-    task.status = task.status === 'In Progress' ? 'Completed' : 'In Progress';
+    task.status = !task.status;
   }
 }
