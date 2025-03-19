@@ -1,6 +1,13 @@
-import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { inject, Injectable, signal } from '@angular/core';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  collectionData,
+} from '@angular/fire/firestore';
 import { doc, updateDoc } from '@angular/fire/firestore';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 export interface Task {
   id: string;
@@ -21,13 +28,14 @@ export class TaskService {
 
   private _collection = collection(this._firestore, PATH);
 
+  loading = signal<boolean>(true);
+
   async create(task: TaskCreate): Promise<Task> {
     const doc = await addDoc(this._collection, task);
     return { id: doc.id, ...task };
   }
 
   async update(task: Task): Promise<void> {
-    // TODO
     const taskDoc = doc(this._firestore, `${PATH}/${task.id}`);
     await updateDoc(taskDoc, {
       name: task.name,
@@ -35,4 +43,20 @@ export class TaskService {
       status: task.status,
     });
   }
+
+  getTasks = toSignal(
+    (
+      collectionData(this._collection, { idField: 'id' }) as Observable<Task[]>
+    ).pipe(
+      tap(() => {
+        this.loading.set(false);
+      }),
+      catchError((error) => {
+        console.error('Error getting documents: ', error);
+        this.loading.set(false);
+        return throwError(error);
+      })
+    ),
+    { initialValue: [] }
+  );
 }
