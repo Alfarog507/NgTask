@@ -12,12 +12,6 @@ import { RouterLink, RouterModule } from '@angular/router';
 export default class TableComponent {
   tasks = input.required<Task[]>();
 
-  constructor() {
-    effect(() => {
-      console.log(this.tasks());
-    });
-  }
-
   toggleStatus(task: any) {
     task.status = !task.status;
   }

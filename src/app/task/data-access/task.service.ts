@@ -4,6 +4,7 @@ import {
   collection,
   addDoc,
   collectionData,
+  getDoc,
 } from '@angular/fire/firestore';
 import { doc, updateDoc } from '@angular/fire/firestore';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -59,4 +60,9 @@ export class TaskService {
     ),
     { initialValue: [] }
   );
+
+  getById(id: string) {
+    const taskRef = doc(this._collection, id);
+    return getDoc(taskRef);
+  }
 }
