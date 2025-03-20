@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, effect, inject, input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskCreate, TaskService } from '../../data-access/task.service';
 import { toast } from 'ngx-sonner';
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-task-form',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.scss',
 })
