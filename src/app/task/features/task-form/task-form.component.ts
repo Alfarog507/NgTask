@@ -1,18 +1,6 @@
-import {
-  AfterViewInit,
-  Component,
-  effect,
-  inject,
-  Input,
-  input,
-} from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, effect, inject, input } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task, TaskCreate, TaskService } from '../../data-access/task.service';
 import { toast } from 'ngx-sonner';
 import { BehaviorSubject } from 'rxjs';
@@ -23,12 +11,12 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.scss',
+  providers: [TaskService],
 })
 export default class TaskFormComponent {
   private _formBuilder = inject(FormBuilder);
   private _router = inject(Router);
   private _taskService = inject(TaskService);
-  private _route = inject(ActivatedRoute);
 
   loading = new BehaviorSubject<boolean>(false);
 

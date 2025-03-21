@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   imports: [TableComponent, RouterLink, CommonModule],
   templateUrl: './task-list.component.html',
   styles: ``,
+  providers: [TaskService],
 })
 export default class TaskListComponent {
   private _authService = inject(AuthStateService);
