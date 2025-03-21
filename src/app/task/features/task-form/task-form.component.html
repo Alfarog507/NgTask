@@ -1,4 +1,7 @@
 <section class="mx-auto w-full max-w-screen-lg px-4">
+  <h2 class="text-lg font-bold mb-4">
+    {{ idTask() ? "Edit" : "Create" }} Task
+  </h2>
   <form class="max-w-sm mx-auto" [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="mb-5">
       <label

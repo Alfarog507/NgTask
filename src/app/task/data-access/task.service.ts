@@ -45,6 +45,7 @@ export class TaskService {
     });
   }
 
+  // Get all tasks
   getTasks = toSignal(
     (
       collectionData(this._collection, { idField: 'id' }) as Observable<Task[]>
@@ -61,6 +62,7 @@ export class TaskService {
     { initialValue: [] }
   );
 
+  // Get task by id
   getById(id: string) {
     const taskRef = doc(this._collection, id);
     return getDoc(taskRef);

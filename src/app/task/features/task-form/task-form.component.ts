@@ -1,7 +1,19 @@
-import { AfterViewInit, Component, effect, inject, input } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  inject,
+  Input,
+  input,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TaskCreate, TaskService } from '../../data-access/task.service';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Task, TaskCreate, TaskService } from '../../data-access/task.service';
 import { toast } from 'ngx-sonner';
 import { BehaviorSubject } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -32,14 +44,25 @@ export default class TaskFormComponent {
     effect(() => {
       // Cargar datos si existe un parámetro 'id'
       const taskId = this.idTask();
-      console.log('Task ID:', taskId);
       if (taskId) {
         this.loadTask(taskId);
       }
     });
   }
 
+  // Método para enviar el formulario
   async onSubmit() {
+    if (this.form.valid) {
+      const taskId = this.idTask();
+      if (taskId) {
+        this.onUpdate();
+      } else {
+        this.onCreate();
+      }
+    }
+  }
+
+  async onCreate() {
     if (this.form.valid) {
       try {
         this.loading.next(true);
@@ -56,6 +79,32 @@ export default class TaskFormComponent {
     }
   }
 
+  async onUpdate() {
+    if (this.form.valid) {
+      try {
+        this.loading.next(true);
+        const taskId = this.idTask();
+        if (!taskId) {
+          console.error('Task ID is undefined.');
+          toast.error('Failed to update task. Please try again.');
+          return;
+        }
+
+        const updatedTask = { id: taskId, ...this.form.value } as Task;
+        await this._taskService.update(updatedTask);
+        toast.success('Task updated successfully!');
+        this.form.reset();
+        this._router.navigate(['/task']);
+      } catch (error) {
+        console.error(error);
+        toast.error('Failed to update task. Please try again.');
+      } finally {
+        this.loading.next(false);
+      }
+    }
+  }
+
+  // Método para cargar una tarea
   private async loadTask(id: string) {
     try {
       this.loading.next(true);
