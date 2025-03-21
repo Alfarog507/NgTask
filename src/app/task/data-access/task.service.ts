@@ -6,7 +6,7 @@ import {
   collectionData,
   getDoc,
 } from '@angular/fire/firestore';
-import { doc, updateDoc } from '@angular/fire/firestore';
+import { doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -45,6 +45,11 @@ export class TaskService {
     });
   }
 
+  async delete(id: string): Promise<void> {
+    const taskDoc = doc(this._firestore, `${PATH}/${id}`);
+    await deleteDoc(taskDoc);
+  }
+
   // Get all tasks
   getTasks = toSignal(
     (
@@ -66,5 +71,10 @@ export class TaskService {
   getById(id: string) {
     const taskRef = doc(this._collection, id);
     return getDoc(taskRef);
+  }
+
+  updateStatus(id: number, status: boolean) {
+    const taskRef = doc(this._collection, id.toString());
+    updateDoc(taskRef, { status });
   }
 }
